@@ -35,6 +35,64 @@
       </tags>
   </entry>
   <entry>
+    <title>css脚本化1</title>
+    <url>/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/</url>
+    <content><![CDATA[<h1 id="什么是css脚本化？"><a href="#什么是css脚本化？" class="headerlink" title="什么是css脚本化？"></a>什么是css脚本化？</h1><a id="more"></a>
+<p>css脚本化是用js动态生成css文件</p>
+<h2 id="获取元素css样式"><a href="#获取元素css样式" class="headerlink" title="获取元素css样式:"></a>获取元素css样式:</h2><pre><code>### 元素节点.style    //获取的是行内样式
+    #### 1.一般使用行内样式来设置某些css属性
+    #### 2.含有连词符的行内属性用驼峰命名法
+    #### 3.float是保留字 一般用cssFloat
+
+### 获取内部css样式:
+    window.getComputedStyle(dom,null)   //ie8及其以上
+        #### 1.一般计算样式表用来获取css属性
+        #### 2.null可以换成after或before  这种伪元素的计算样式表
+    dom.currentStyle     //ie8以下
+        获取计算样式表</code></pre><h2 id="兼容函数"><a href="#兼容函数" class="headerlink" title="兼容函数:"></a>兼容函数:</h2><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(dom , arr)&#123;</span><br><span class="line">	if( dom.currentStyle )&#123;</span><br><span class="line">		retrun console.log(dom.currentStyle.arr)</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		retrun console.log(window.getComputedStyle(dom,null).arr)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+可以优化成:
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(dom , arr)&#123;</span><br><span class="line">	return dom.currentStyle?retrun console.log(dom.currentStyle.arr):retrun console.log(window.getComputedStyle(dom,null).arr);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><h2 id="获取元素的实际大小"><a href="#获取元素的实际大小" class="headerlink" title="获取元素的实际大小:"></a>获取元素的实际大小:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dom.clientWidth		&#x2F;&#x2F;width+左右padding的值(不会加上border值)</span><br><span class="line">dom.clientHeight	&#x2F;&#x2F;height+上下padding的值(不会加上border值)</span><br><span class="line"></span><br><span class="line">dom.offsetWidth		&#x2F;&#x2F;width+左右padding+border的大小</span><br><span class="line">dom.offsetHeight	&#x2F;&#x2F;height+上下padding+border的大小</span><br><span class="line"></span><br><span class="line">dom.scrollWidth		&#x2F;&#x2F;获取dom的内容宽度(dom内容超过容器时超过dom的尺寸,没有超过获取到容器的 大小)</span><br><span class="line">dom.scrollHeight	&#x2F;&#x2F;获取dom的内容高度(dom内容超过容器时超过dom的尺寸,没有超过获取到容器的 大小)</span><br></pre></td></tr></table></figure>
+
+<h2 id="获取元素在页面中的位置"><a href="#获取元素在页面中的位置" class="headerlink" title="获取元素在页面中的位置:"></a>获取元素在页面中的位置:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dom.offsetTop	&#x2F;&#x2F;获取dom到定位父级的 垂直距离</span><br><span class="line">dom.offsetLeft	&#x2F;&#x2F;获取dom到定位父级的 水平距离</span><br><span class="line"></span><br><span class="line">dom.clienLeft	&#x2F;&#x2F;获取dom左边框的宽度</span><br><span class="line">dom.clienTop	&#x2F;&#x2F;获取dom上边框的宽度</span><br><span class="line"></span><br><span class="line">dom.scrollLeft	&#x2F;&#x2F;获取dom水平滚动的距离(超出部分给css属性overflow:scroll超出部分滚动条)</span><br><span class="line">dom.scrollLeft 	&#x2F;&#x2F;获取dom竖直滚动的距离.</span><br><span class="line"></span><br><span class="line">dom.offserParent	&#x2F;&#x2F;获取dom的定位父级</span><br></pre></td></tr></table></figure>
+
+<h2 id="获取元素相对于文档的坐标-返回一个对象-x-水平距离-y-垂直距离"><a href="#获取元素相对于文档的坐标-返回一个对象-x-水平距离-y-垂直距离" class="headerlink" title="获取元素相对于文档的坐标    返回一个对象{x:水平距离 , y:垂直距离}"></a>获取元素相对于文档的坐标    返回一个对象{x:水平距离 , y:垂直距离}</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function getElementPosition(dom)&#123;</span><br><span class="line">	if(dom.offsetParent &#x3D;&#x3D;&#x3D; document.body)&#123;</span><br><span class="line">		return &#123;</span><br><span class="line">			x:dom.offsetLeft,</span><br><span class="line">			y:dom.offsetTop ;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;else&#123;	&#x2F;&#x2F;父级是body的直接子元素其子元素相对于文档的坐标</span><br><span class="line">		return &#123;</span><br><span class="line">			x:dom.offsetLeft + getElementPosition(dom.offsetParent).x ,</span><br><span class="line">			y:dom.offsetTop + getElementPosition(dom.offsetTop).y ;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(getElementPosition(oBig));</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>-js篇</category>
+      </categories>
+      <tags>
+        <tag>-js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>express如何调用外部api</title>
+    <url>/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/</url>
+    <content><![CDATA[<h1 id="再node中如何调用外部的api"><a href="#再node中如何调用外部的api" class="headerlink" title="再node中如何调用外部的api"></a>再node中如何调用外部的api</h1><a id="more"></a>
+<h2 id="1-需要添加request依赖"><a href="#1-需要添加request依赖" class="headerlink" title="1.需要添加request依赖"></a>1.需要添加request依赖</h2><p><img src="https://images2018.cnblogs.com/blog/858938/201803/858938-20180328153205383-1801109576.png" alt="添加依赖"></p>
+<h2 id="2-复制代码"><a href="#2-复制代码" class="headerlink" title="2.复制代码"></a>2.复制代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var express&#x3D;require(&#39;express&#39;);</span><br><span class="line">var router&#x3D;express.Router();</span><br><span class="line">var request&#x3D;require(&#39;request&#39;);</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;&#39;,function(req,res,next)&#123;</span><br><span class="line">   res.send(&quot;hello world&quot;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;gettask</span><br><span class="line">router.get(&#39;&#x2F;gettask&#39;,function(req, res,next)&#123;</span><br><span class="line">    var e&#x3D;request(&#123;url:&#39;http:&#x2F;&#x2F;xxx:123456&#x2F;getVerify?account&#x3D;123456&#39;,</span><br><span class="line">    method:&#39;GET&#39;,</span><br><span class="line">    headers:&#123;&#39;Content-Type&#39;:&#39;text&#x2F;json&#39; &#125;</span><br><span class="line">    &#125;,function(error,response,body)&#123;</span><br><span class="line">        if(!error &amp;&amp; response.statusCode&#x3D;&#x3D;200)&#123;</span><br><span class="line">            res.render(&#39;task&#39;,&#123;&#39;data&#39;:JSON.parse(body) &#125; );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">module.exports&#x3D;router;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>-js篇</category>
+      </categories>
+      <tags>
+        <tag>-js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>promise原理</title>
+    <url>/2020/04/16/promise%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="promise原理"><a href="#promise原理" class="headerlink" title="promise原理"></a>promise原理</h1><a id="more"></a>
+<h2 id="1-promise三种状态"><a href="#1-promise三种状态" class="headerlink" title="1.promise三种状态"></a>1.promise三种状态</h2><p>是se6新增语法用于处理异步问题</p>
+<h3 id="1-pending-待机状态"><a href="#1-pending-待机状态" class="headerlink" title="1.pending    待机状态"></a>1.pending    待机状态</h3><h3 id="2-reslove-正常工作状态"><a href="#2-reslove-正常工作状态" class="headerlink" title="2.reslove    正常工作状态"></a>2.reslove    正常工作状态</h3><h3 id="3-rejected-出现错误"><a href="#3-rejected-出现错误" class="headerlink" title="3.rejected   出现错误"></a>3.rejected   出现错误</h3><h2 id="2-promise核心原理"><a href="#2-promise核心原理" class="headerlink" title="2.promise核心原理"></a>2.promise核心原理</h2><p>promise的核心原理其实就是发布订阅模式，通过两个队列来缓存成功的回调（onResolve）和失败的回调（onReject）。如果还不熟悉promise用法的朋友，请参考Es6入门之promise对象，下面来分析promise的特点。</p>
+<p>promise的特点：</p>
+<p>new Promise时需要传递一个executor执行器,执行器会立刻执行</p>
+<h3 id="1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"><a href="#1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务" class="headerlink" title="1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"></a>1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务</h3><h3 id="2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected"><a href="#2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected" class="headerlink" title="2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected"></a>2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected</h3><h3 id="3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"><a href="#3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中" class="headerlink" title="3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"></a>3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中</h3><h3 id="4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅"><a href="#4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅" class="headerlink" title="4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)"></a>4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)</h3>]]></content>
+      <categories>
+        <category>-js篇</category>
+      </categories>
+      <tags>
+        <tag>-js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>css脚本化2</title>
     <url>/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%962/</url>
     <content><![CDATA[<h1 id="什么是css脚本化第二篇"><a href="#什么是css脚本化第二篇" class="headerlink" title="什么是css脚本化第二篇"></a>什么是css脚本化第二篇</h1><a id="more"></a>
@@ -80,64 +138,6 @@ document.body.scrollTop    //写兼容函数</code></pre><h2 id="2-封装兼容�
     }
 }</code></pre><h2 id="6-让滚动条滚动距离"><a href="#6-让滚动条滚动距离" class="headerlink" title="6.让滚动条滚动距离:"></a>6.让滚动条滚动距离:</h2><pre><code>window.scrollBy(x,y)    //让滚动条水平滚动x , 竖直滚动y(可以重复使用)
 window.scrollTo(x,y)    //让滚动条水平滚动到x , 竖直滚动到y</code></pre>]]></content>
-      <categories>
-        <category>-js篇</category>
-      </categories>
-      <tags>
-        <tag>-js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>css脚本化1</title>
-    <url>/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/</url>
-    <content><![CDATA[<h1 id="什么是css脚本化？"><a href="#什么是css脚本化？" class="headerlink" title="什么是css脚本化？"></a>什么是css脚本化？</h1><a id="more"></a>
-<p>css脚本化是用js动态生成css文件</p>
-<h2 id="获取元素css样式"><a href="#获取元素css样式" class="headerlink" title="获取元素css样式:"></a>获取元素css样式:</h2><pre><code>### 元素节点.style    //获取的是行内样式
-    #### 1.一般使用行内样式来设置某些css属性
-    #### 2.含有连词符的行内属性用驼峰命名法
-    #### 3.float是保留字 一般用cssFloat
-
-### 获取内部css样式:
-    window.getComputedStyle(dom,null)   //ie8及其以上
-        #### 1.一般计算样式表用来获取css属性
-        #### 2.null可以换成after或before  这种伪元素的计算样式表
-    dom.currentStyle     //ie8以下
-        获取计算样式表</code></pre><h2 id="兼容函数"><a href="#兼容函数" class="headerlink" title="兼容函数:"></a>兼容函数:</h2><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(dom , arr)&#123;</span><br><span class="line">	if( dom.currentStyle )&#123;</span><br><span class="line">		retrun console.log(dom.currentStyle.arr)</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		retrun console.log(window.getComputedStyle(dom,null).arr)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-可以优化成:
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(dom , arr)&#123;</span><br><span class="line">	return dom.currentStyle?retrun console.log(dom.currentStyle.arr):retrun console.log(window.getComputedStyle(dom,null).arr);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><h2 id="获取元素的实际大小"><a href="#获取元素的实际大小" class="headerlink" title="获取元素的实际大小:"></a>获取元素的实际大小:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dom.clientWidth		&#x2F;&#x2F;width+左右padding的值(不会加上border值)</span><br><span class="line">dom.clientHeight	&#x2F;&#x2F;height+上下padding的值(不会加上border值)</span><br><span class="line"></span><br><span class="line">dom.offsetWidth		&#x2F;&#x2F;width+左右padding+border的大小</span><br><span class="line">dom.offsetHeight	&#x2F;&#x2F;height+上下padding+border的大小</span><br><span class="line"></span><br><span class="line">dom.scrollWidth		&#x2F;&#x2F;获取dom的内容宽度(dom内容超过容器时超过dom的尺寸,没有超过获取到容器的 大小)</span><br><span class="line">dom.scrollHeight	&#x2F;&#x2F;获取dom的内容高度(dom内容超过容器时超过dom的尺寸,没有超过获取到容器的 大小)</span><br></pre></td></tr></table></figure>
-
-<h2 id="获取元素在页面中的位置"><a href="#获取元素在页面中的位置" class="headerlink" title="获取元素在页面中的位置:"></a>获取元素在页面中的位置:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dom.offsetTop	&#x2F;&#x2F;获取dom到定位父级的 垂直距离</span><br><span class="line">dom.offsetLeft	&#x2F;&#x2F;获取dom到定位父级的 水平距离</span><br><span class="line"></span><br><span class="line">dom.clienLeft	&#x2F;&#x2F;获取dom左边框的宽度</span><br><span class="line">dom.clienTop	&#x2F;&#x2F;获取dom上边框的宽度</span><br><span class="line"></span><br><span class="line">dom.scrollLeft	&#x2F;&#x2F;获取dom水平滚动的距离(超出部分给css属性overflow:scroll超出部分滚动条)</span><br><span class="line">dom.scrollLeft 	&#x2F;&#x2F;获取dom竖直滚动的距离.</span><br><span class="line"></span><br><span class="line">dom.offserParent	&#x2F;&#x2F;获取dom的定位父级</span><br></pre></td></tr></table></figure>
-
-<h2 id="获取元素相对于文档的坐标-返回一个对象-x-水平距离-y-垂直距离"><a href="#获取元素相对于文档的坐标-返回一个对象-x-水平距离-y-垂直距离" class="headerlink" title="获取元素相对于文档的坐标    返回一个对象{x:水平距离 , y:垂直距离}"></a>获取元素相对于文档的坐标    返回一个对象{x:水平距离 , y:垂直距离}</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function getElementPosition(dom)&#123;</span><br><span class="line">	if(dom.offsetParent &#x3D;&#x3D;&#x3D; document.body)&#123;</span><br><span class="line">		return &#123;</span><br><span class="line">			x:dom.offsetLeft,</span><br><span class="line">			y:dom.offsetTop ;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;else&#123;	&#x2F;&#x2F;父级是body的直接子元素其子元素相对于文档的坐标</span><br><span class="line">		return &#123;</span><br><span class="line">			x:dom.offsetLeft + getElementPosition(dom.offsetParent).x ,</span><br><span class="line">			y:dom.offsetTop + getElementPosition(dom.offsetTop).y ;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(getElementPosition(oBig));</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>-js篇</category>
-      </categories>
-      <tags>
-        <tag>-js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>promise原理</title>
-    <url>/2020/04/16/promise%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h1 id="promise原理"><a href="#promise原理" class="headerlink" title="promise原理"></a>promise原理</h1><a id="more"></a>
-<h2 id="1-promise三种状态"><a href="#1-promise三种状态" class="headerlink" title="1.promise三种状态"></a>1.promise三种状态</h2><p>是se6新增语法用于处理异步问题</p>
-<h3 id="1-pending-待机状态"><a href="#1-pending-待机状态" class="headerlink" title="1.pending    待机状态"></a>1.pending    待机状态</h3><h3 id="2-reslove-正常工作状态"><a href="#2-reslove-正常工作状态" class="headerlink" title="2.reslove    正常工作状态"></a>2.reslove    正常工作状态</h3><h3 id="3-rejected-出现错误"><a href="#3-rejected-出现错误" class="headerlink" title="3.rejected   出现错误"></a>3.rejected   出现错误</h3><h2 id="2-promise核心原理"><a href="#2-promise核心原理" class="headerlink" title="2.promise核心原理"></a>2.promise核心原理</h2><p>promise的核心原理其实就是发布订阅模式，通过两个队列来缓存成功的回调（onResolve）和失败的回调（onReject）。如果还不熟悉promise用法的朋友，请参考Es6入门之promise对象，下面来分析promise的特点。</p>
-<p>promise的特点：</p>
-<p>new Promise时需要传递一个executor执行器,执行器会立刻执行</p>
-<h3 id="1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"><a href="#1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务" class="headerlink" title="1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"></a>1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务</h3><h3 id="2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected"><a href="#2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected" class="headerlink" title="2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected"></a>2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected</h3><h3 id="3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"><a href="#3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中" class="headerlink" title="3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"></a>3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中</h3><h3 id="4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅"><a href="#4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅" class="headerlink" title="4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)"></a>4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)</h3>]]></content>
-      <categories>
-        <category>-js篇</category>
-      </categories>
-      <tags>
-        <tag>-js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>express如何调用外部api</title>
-    <url>/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/</url>
-    <content><![CDATA[<h1 id="再node中如何调用外部的api"><a href="#再node中如何调用外部的api" class="headerlink" title="再node中如何调用外部的api"></a>再node中如何调用外部的api</h1><a id="more"></a>
-<h2 id="1-需要添加request依赖"><a href="#1-需要添加request依赖" class="headerlink" title="1.需要添加request依赖"></a>1.需要添加request依赖</h2><p><img src="https://images2018.cnblogs.com/blog/858938/201803/858938-20180328153205383-1801109576.png" alt="添加依赖"></p>
-<h2 id="2-复制代码"><a href="#2-复制代码" class="headerlink" title="2.复制代码"></a>2.复制代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var express&#x3D;require(&#39;express&#39;);</span><br><span class="line">var router&#x3D;express.Router();</span><br><span class="line">var request&#x3D;require(&#39;request&#39;);</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;&#39;,function(req,res,next)&#123;</span><br><span class="line">   res.send(&quot;hello world&quot;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;gettask</span><br><span class="line">router.get(&#39;&#x2F;gettask&#39;,function(req, res,next)&#123;</span><br><span class="line">    var e&#x3D;request(&#123;url:&#39;http:&#x2F;&#x2F;xxx:123456&#x2F;getVerify?account&#x3D;123456&#39;,</span><br><span class="line">    method:&#39;GET&#39;,</span><br><span class="line">    headers:&#123;&#39;Content-Type&#39;:&#39;text&#x2F;json&#39; &#125;</span><br><span class="line">    &#125;,function(error,response,body)&#123;</span><br><span class="line">        if(!error &amp;&amp; response.statusCode&#x3D;&#x3D;200)&#123;</span><br><span class="line">            res.render(&#39;task&#39;,&#123;&#39;data&#39;:JSON.parse(body) &#125; );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">module.exports&#x3D;router;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>-js篇</category>
       </categories>
