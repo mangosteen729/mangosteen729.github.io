@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>express如何调用外部api</title>
-    <url>/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/</url>
-    <content><![CDATA[<h1 id="再node中如何调用外部的api"><a href="#再node中如何调用外部的api" class="headerlink" title="再node中如何调用外部的api"></a>再node中如何调用外部的api</h1><a id="more"></a>
-<h2 id="1-需要添加request依赖"><a href="#1-需要添加request依赖" class="headerlink" title="1.需要添加request依赖"></a>1.需要添加request依赖</h2><p><img src="https://images2018.cnblogs.com/blog/858938/201803/858938-20180328153205383-1801109576.png" alt="添加依赖"></p>
-<h2 id="2-复制代码"><a href="#2-复制代码" class="headerlink" title="2.复制代码"></a>2.复制代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var express&#x3D;require(&#39;express&#39;);</span><br><span class="line">var router&#x3D;express.Router();</span><br><span class="line">var request&#x3D;require(&#39;request&#39;);</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;&#39;,function(req,res,next)&#123;</span><br><span class="line">   res.send(&quot;hello world&quot;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;gettask</span><br><span class="line">router.get(&#39;&#x2F;gettask&#39;,function(req, res,next)&#123;</span><br><span class="line">    var e&#x3D;request(&#123;url:&#39;http:&#x2F;&#x2F;xxx:123456&#x2F;getVerify?account&#x3D;123456&#39;,</span><br><span class="line">    method:&#39;GET&#39;,</span><br><span class="line">    headers:&#123;&#39;Content-Type&#39;:&#39;text&#x2F;json&#39; &#125;</span><br><span class="line">    &#125;,function(error,response,body)&#123;</span><br><span class="line">        if(!error &amp;&amp; response.statusCode&#x3D;&#x3D;200)&#123;</span><br><span class="line">            res.render(&#39;task&#39;,&#123;&#39;data&#39;:JSON.parse(body) &#125; );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">module.exports&#x3D;router;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>半个小时学会less</title>
+    <url>/2020/04/16/1%E4%B8%AA%E5%B0%8F%E6%97%B6%E5%AD%A6%E4%BC%9Aless/</url>
+    <content><![CDATA[<h1 id="如何使用less，以及为什么要使用less"><a href="#如何使用less，以及为什么要使用less" class="headerlink" title="如何使用less，以及为什么要使用less"></a>如何使用less，以及为什么要使用less</h1><a id="more"></a>
+<h2 id="为什么在企业工作中要使用less而不是原生css"><a href="#为什么在企业工作中要使用less而不是原生css" class="headerlink" title="为什么在企业工作中要使用less而不是原生css?"></a>为什么在企业工作中要使用less而不是原生css?</h2><h3 id="1-使用less开发时更具有结构感-不会造成后期维护时因为结构混乱长时间查找需要修改的代码"><a href="#1-使用less开发时更具有结构感-不会造成后期维护时因为结构混乱长时间查找需要修改的代码" class="headerlink" title="1.使用less开发时更具有结构感,不会造成后期维护时因为结构混乱长时间查找需要修改的代码."></a>1.使用less开发时更具有结构感,不会造成后期维护时因为结构混乱长时间查找需要修改的代码.</h3><h3 id="2-使用less可以使用变量-混合等方法避免了-代码的沉余和耦合"><a href="#2-使用less可以使用变量-混合等方法避免了-代码的沉余和耦合" class="headerlink" title="2.使用less可以使用变量,混合等方法避免了,代码的沉余和耦合."></a>2.使用less可以使用变量,混合等方法避免了,代码的沉余和耦合.</h3><h2 id="如何使用less"><a href="#如何使用less" class="headerlink" title="如何使用less?"></a>如何使用less?</h2><h3 id="1-首先引入less"><a href="#1-首先引入less" class="headerlink" title="1.首先引入less"></a>1.首先引入less</h3><p><code>npm install -g less</code></p>
+<h3 id="2-命令行用法："><a href="#2-命令行用法：" class="headerlink" title="2.命令行用法："></a>2.命令行用法：</h3><p>安装 Less 后，就可以在命令行上调用 Less 编译器了，如下：</p>
+<p><code>$ lessc styles.less</code><br>这将输出编译之后的 CSS 代码到 stdout，你可以将输出重定向到一个文件：</p>
+<p><code>$ lessc styles.less &gt; styles.css</code><br>若要输出压缩过的 CSS，只需添加 -x 选项。如果希望获得更好的压缩效果，还可以通过 –clean-css 选项启用 Clean CSS 进行压缩。</p>
+<p>执行 lessc 且不带任何参数，就会在命令行上输出所有可用选项的列表。</p>
+<h3 id="3-定义变量"><a href="#3-定义变量" class="headerlink" title="3.定义变量"></a>3.定义变量</h3><p>在less中可以直接定义一个变量然后使用<br>注意定义变量会延迟加载同作用域下使用变量会造成错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@color:pink;</span><br><span class="line">body&#123;</span><br><span class="line">    background:@color;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-嵌套结构"><a href="#4-嵌套结构" class="headerlink" title="4.嵌套结构"></a>4.嵌套结构</h3><p>可以使用&amp;符加给#box,代表#box与body平级</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">    body&#123;</span><br><span class="line">        background:pink;</span><br><span class="line">        #box&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-定义混合"><a href="#5-定义混合" class="headerlink" title="5.定义混合"></a>5.定义混合</h3><pre><code>混合的分类:
+    1.普通混合  //会被编译,其他混合不会
+    2.不带输出混合
+    3.带参数的混合
+    4.带参数并且有默认值的混合  //形参用变量
+    5.带多个参数的混合
+    6.命名参数
+    7.匹配模式  //在混合里第一个参数改为自己定义的标识符如.mixin(R,@w,@h),.mixin(@_),调用时.mixin(R,20px,30px)会调用.mixin(R,@w,@h),.mixin(@_)这两个.
+    8.arguments变量   //很少用同es6中的 arguments</code></pre><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.mixin(@w,@h)&#123; &#x2F;&#x2F;用.定义混合可以直接使用无变量会编译</span><br><span class="line">    position:relative;</span><br><span class="line">    width:@w;</span><br><span class="line">    height:@h;</span><br><span class="line">    background:pink;</span><br><span class="line">&#125;</span><br><span class="line">body&#123;</span><br><span class="line">    .mixin(200px , 400px)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-less的继承"><a href="#6-less的继承" class="headerlink" title="6.less的继承"></a>6.less的继承</h3><p>为避免编译后的css代码出现沉余,所以要用继承而不是混合</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.extend&#123;</span><br><span class="line">   position:relative;</span><br><span class="line">   left:100px;</span><br><span class="line">   &#125;</span><br><span class="line">   #app&#123;</span><br><span class="line">       &amp;:extend(.extend all);  &#x2F;&#x2F;添加all会加上其他事件如.extend:hover</span><br><span class="line">       $:nth-child(1)&#123;</span><br><span class="line">           width:100px;</span><br><span class="line">           height:200px;</span><br><span class="line">           &#125;</span><br><span class="line">       $:nth-child(2)&#123;</span><br><span class="line">           width:400px;</span><br><span class="line">           height:400px;</span><br><span class="line">           &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>编译后不会如混合一样两个子元素中都有.extend中的代码,而是在#app中</p>
+<p>###7.避免编译</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*&#123;</span><br><span class="line">    margin:0;</span><br><span class="line">    padding:~&quot;clal(100px+100)&quot;  &#x2F;&#x2F;在编译成css时会跳过这句</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>-js篇</category>
+        <category>-css篇</category>
       </categories>
       <tags>
-        <tag>-js</tag>
+        <tag>-less</tag>
       </tags>
   </entry>
   <entry>
@@ -96,40 +117,6 @@ window.scrollTo(x,y)    //让滚动条水平滚动到x , 竖直滚动到y</code>
       </tags>
   </entry>
   <entry>
-    <title>半个小时学会less</title>
-    <url>/2020/04/16/1%E4%B8%AA%E5%B0%8F%E6%97%B6%E5%AD%A6%E4%BC%9Aless/</url>
-    <content><![CDATA[<h1 id="如何使用less，以及为什么要使用less"><a href="#如何使用less，以及为什么要使用less" class="headerlink" title="如何使用less，以及为什么要使用less"></a>如何使用less，以及为什么要使用less</h1><a id="more"></a>
-<h2 id="为什么在企业工作中要使用less而不是原生css"><a href="#为什么在企业工作中要使用less而不是原生css" class="headerlink" title="为什么在企业工作中要使用less而不是原生css?"></a>为什么在企业工作中要使用less而不是原生css?</h2><h3 id="1-使用less开发时更具有结构感-不会造成后期维护时因为结构混乱长时间查找需要修改的代码"><a href="#1-使用less开发时更具有结构感-不会造成后期维护时因为结构混乱长时间查找需要修改的代码" class="headerlink" title="1.使用less开发时更具有结构感,不会造成后期维护时因为结构混乱长时间查找需要修改的代码."></a>1.使用less开发时更具有结构感,不会造成后期维护时因为结构混乱长时间查找需要修改的代码.</h3><h3 id="2-使用less可以使用变量-混合等方法避免了-代码的沉余和耦合"><a href="#2-使用less可以使用变量-混合等方法避免了-代码的沉余和耦合" class="headerlink" title="2.使用less可以使用变量,混合等方法避免了,代码的沉余和耦合."></a>2.使用less可以使用变量,混合等方法避免了,代码的沉余和耦合.</h3><h2 id="如何使用less"><a href="#如何使用less" class="headerlink" title="如何使用less?"></a>如何使用less?</h2><h3 id="1-首先引入less"><a href="#1-首先引入less" class="headerlink" title="1.首先引入less"></a>1.首先引入less</h3><p><code>npm install -g less</code></p>
-<h3 id="2-命令行用法："><a href="#2-命令行用法：" class="headerlink" title="2.命令行用法："></a>2.命令行用法：</h3><p>安装 Less 后，就可以在命令行上调用 Less 编译器了，如下：</p>
-<p><code>$ lessc styles.less</code><br>这将输出编译之后的 CSS 代码到 stdout，你可以将输出重定向到一个文件：</p>
-<p><code>$ lessc styles.less &gt; styles.css</code><br>若要输出压缩过的 CSS，只需添加 -x 选项。如果希望获得更好的压缩效果，还可以通过 –clean-css 选项启用 Clean CSS 进行压缩。</p>
-<p>执行 lessc 且不带任何参数，就会在命令行上输出所有可用选项的列表。</p>
-<h3 id="3-定义变量"><a href="#3-定义变量" class="headerlink" title="3.定义变量"></a>3.定义变量</h3><p>在less中可以直接定义一个变量然后使用<br>注意定义变量会延迟加载同作用域下使用变量会造成错误</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@color:pink;</span><br><span class="line">body&#123;</span><br><span class="line">    background:@color;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-嵌套结构"><a href="#4-嵌套结构" class="headerlink" title="4.嵌套结构"></a>4.嵌套结构</h3><p>可以使用&amp;符加给#box,代表#box与body平级</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">    body&#123;</span><br><span class="line">        background:pink;</span><br><span class="line">        #box&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-定义混合"><a href="#5-定义混合" class="headerlink" title="5.定义混合"></a>5.定义混合</h3><pre><code>混合的分类:
-    1.普通混合  //会被编译,其他混合不会
-    2.不带输出混合
-    3.带参数的混合
-    4.带参数并且有默认值的混合  //形参用变量
-    5.带多个参数的混合
-    6.命名参数
-    7.匹配模式  //在混合里第一个参数改为自己定义的标识符如.mixin(R,@w,@h),.mixin(@_),调用时.mixin(R,20px,30px)会调用.mixin(R,@w,@h),.mixin(@_)这两个.
-    8.arguments变量   //很少用同es6中的 arguments</code></pre><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.mixin(@w,@h)&#123; &#x2F;&#x2F;用.定义混合可以直接使用无变量会编译</span><br><span class="line">    position:relative;</span><br><span class="line">    width:@w;</span><br><span class="line">    height:@h;</span><br><span class="line">    background:pink;</span><br><span class="line">&#125;</span><br><span class="line">body&#123;</span><br><span class="line">    .mixin(200px , 400px)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="6-less的继承"><a href="#6-less的继承" class="headerlink" title="6.less的继承"></a>6.less的继承</h3><p>为避免编译后的css代码出现沉余,所以要用继承而不是混合</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.extend&#123;</span><br><span class="line">   position:relative;</span><br><span class="line">   left:100px;</span><br><span class="line">   &#125;</span><br><span class="line">   #app&#123;</span><br><span class="line">       &amp;:extend(.extend all);  &#x2F;&#x2F;添加all会加上其他事件如.extend:hover</span><br><span class="line">       $:nth-child(1)&#123;</span><br><span class="line">           width:100px;</span><br><span class="line">           height:200px;</span><br><span class="line">           &#125;</span><br><span class="line">       $:nth-child(2)&#123;</span><br><span class="line">           width:400px;</span><br><span class="line">           height:400px;</span><br><span class="line">           &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>编译后不会如混合一样两个子元素中都有.extend中的代码,而是在#app中</p>
-<p>###7.避免编译</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*&#123;</span><br><span class="line">    margin:0;</span><br><span class="line">    padding:~&quot;clal(100px+100)&quot;  &#x2F;&#x2F;在编译成css时会跳过这句</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>-css篇</category>
-      </categories>
-      <tags>
-        <tag>-less</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>promise原理</title>
     <url>/2020/04/16/promise%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h1 id="promise原理"><a href="#promise原理" class="headerlink" title="promise原理"></a>promise原理</h1><a id="more"></a>
@@ -138,6 +125,19 @@ window.scrollTo(x,y)    //让滚动条水平滚动到x , 竖直滚动到y</code>
 <p>promise的特点：</p>
 <p>new Promise时需要传递一个executor执行器,执行器会立刻执行</p>
 <h3 id="1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"><a href="#1-promise状态只能从pending态转onfulfilled-onrejected到resolved或者rejected，然后执行相应缓存队列中的任务" class="headerlink" title="1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务"></a>1.promise状态只能从pending态转onfulfilled,onrejected到resolved或者rejected，然后执行相应缓存队列中的任务</h3><h3 id="2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected"><a href="#2-promise实例-每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled-另一个是失败回调onrejected" class="headerlink" title="2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected"></a>2.promise实例,每个实例都有一个then方法，这个方法传递两个参数，一个是成功回调onfulfilled,另一个是失败回调onrejected</h3><h3 id="3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"><a href="#3-promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中" class="headerlink" title="3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中"></a>3.promise实例调用then时，如果状态resolved，会让onfulfilled执行并且把成功的内容当作参数传递到函数中</h3><h3 id="4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅"><a href="#4-promise中可以同一个实例then多次-如果状态是pengding-需要将函数存放起来-等待状态确定后-在依次将对应的函数执行-发布订阅" class="headerlink" title="4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)"></a>4.promise中可以同一个实例then多次,如果状态是pengding 需要将函数存放起来 等待状态确定后 在依次将对应的函数执行 (发布订阅)</h3>]]></content>
+      <categories>
+        <category>-js篇</category>
+      </categories>
+      <tags>
+        <tag>-js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>express如何调用外部api</title>
+    <url>/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/</url>
+    <content><![CDATA[<h1 id="再node中如何调用外部的api"><a href="#再node中如何调用外部的api" class="headerlink" title="再node中如何调用外部的api"></a>再node中如何调用外部的api</h1><a id="more"></a>
+<h2 id="1-需要添加request依赖"><a href="#1-需要添加request依赖" class="headerlink" title="1.需要添加request依赖"></a>1.需要添加request依赖</h2><p><img src="https://images2018.cnblogs.com/blog/858938/201803/858938-20180328153205383-1801109576.png" alt="添加依赖"></p>
+<h2 id="2-复制代码"><a href="#2-复制代码" class="headerlink" title="2.复制代码"></a>2.复制代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var express&#x3D;require(&#39;express&#39;);</span><br><span class="line">var router&#x3D;express.Router();</span><br><span class="line">var request&#x3D;require(&#39;request&#39;);</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;&#39;,function(req,res,next)&#123;</span><br><span class="line">   res.send(&quot;hello world&quot;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;gettask</span><br><span class="line">router.get(&#39;&#x2F;gettask&#39;,function(req, res,next)&#123;</span><br><span class="line">    var e&#x3D;request(&#123;url:&#39;http:&#x2F;&#x2F;xxx:123456&#x2F;getVerify?account&#x3D;123456&#39;,</span><br><span class="line">    method:&#39;GET&#39;,</span><br><span class="line">    headers:&#123;&#39;Content-Type&#39;:&#39;text&#x2F;json&#39; &#125;</span><br><span class="line">    &#125;,function(error,response,body)&#123;</span><br><span class="line">        if(!error &amp;&amp; response.statusCode&#x3D;&#x3D;200)&#123;</span><br><span class="line">            res.render(&#39;task&#39;,&#123;&#39;data&#39;:JSON.parse(body) &#125; );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">module.exports&#x3D;router;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>-js篇</category>
       </categories>
@@ -174,6 +174,31 @@ window.scrollTo(x,y)    //让滚动条水平滚动到x , 竖直滚动到y</code>
       </categories>
       <tags>
         <tag>-webpack vue配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可枚举和不可枚举</title>
+    <url>/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/</url>
+    <content><![CDATA[<h1 id="可枚举和不可枚举"><a href="#可枚举和不可枚举" class="headerlink" title="可枚举和不可枚举"></a>可枚举和不可枚举</h1><a id="more"></a>
+<p>枚举：是指对象中的属性可以遍历出来，再简单点就是属性可以列举出来。<br>可枚举性决定了这个属性能否被for…in查找遍历到。</p>
+<p>js中基本包装类型的原型属性是不可枚举的，如Object, Array, Number等，如果你写出这样的代码遍历其中的属性：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var num &#x3D; new Number();</span><br><span class="line">for(var pro in num) &#123;</span><br><span class="line">    console.log(&quot;num.&quot; + pro + &quot; &#x3D; &quot; + num[pro]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它的输出结果会是空。这是因为Number中内置的属性是不可枚举的，所以不能被for…in访问到。</p>
+<p>枚举性的作用：<br>1、for…in<br>2、Object.keys()<br>3、JSON.stringify()</p>
+<p>那么什么样的属性是可枚举属性呢？<br>1、通过Object.defineProperty()方法加的可枚举属性<br>enumerable: true 可枚举</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123; </span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: true</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line">&#x2F;&#x2F; 3</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>enumerable: false 不可枚举</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123;</span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: false</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、或者通过原型对象绑定的可以枚举属性（这种枚举类型只有for…in方法可以访问到）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function Person () &#123;</span><br><span class="line">    this.name &#x3D; &#39;Lily&#39;</span><br><span class="line">    this.gender &#x3D; &#39;女&#39;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.age &#x3D; 24</span><br><span class="line">let people &#x3D; new Person()</span><br><span class="line">for (let key in people) &#123;</span><br><span class="line">    console.log(people[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; Lily</span><br><span class="line">&#x2F;&#x2F; 女</span><br><span class="line">&#x2F;&#x2F; 4</span><br><span class="line">console.log(Object.keys(o))             &#x2F;&#x2F; [&quot;Lily&quot;, &quot;女&quot;]</span><br><span class="line">console.log(JSON.stringify(people))     &#x2F;&#x2F; &#123;&quot;name&quot;:&quot;Lily&quot;,&quot;gender&quot;:&quot;女&quot;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>-js篇</category>
+      </categories>
+      <tags>
+        <tag>-js枚举</tag>
       </tags>
   </entry>
   <entry>
@@ -221,31 +246,6 @@ BOM（浏览对象）
       </categories>
       <tags>
         <tag>-js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>可枚举和不可枚举</title>
-    <url>/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/</url>
-    <content><![CDATA[<h1 id="可枚举和不可枚举"><a href="#可枚举和不可枚举" class="headerlink" title="可枚举和不可枚举"></a>可枚举和不可枚举</h1><a id="more"></a>
-<p>枚举：是指对象中的属性可以遍历出来，再简单点就是属性可以列举出来。<br>可枚举性决定了这个属性能否被for…in查找遍历到。</p>
-<p>js中基本包装类型的原型属性是不可枚举的，如Object, Array, Number等，如果你写出这样的代码遍历其中的属性：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var num &#x3D; new Number();</span><br><span class="line">for(var pro in num) &#123;</span><br><span class="line">    console.log(&quot;num.&quot; + pro + &quot; &#x3D; &quot; + num[pro]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>它的输出结果会是空。这是因为Number中内置的属性是不可枚举的，所以不能被for…in访问到。</p>
-<p>枚举性的作用：<br>1、for…in<br>2、Object.keys()<br>3、JSON.stringify()</p>
-<p>那么什么样的属性是可枚举属性呢？<br>1、通过Object.defineProperty()方法加的可枚举属性<br>enumerable: true 可枚举</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123; </span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: true</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line">&#x2F;&#x2F; 3</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3&#125;</span><br></pre></td></tr></table></figure>
-
-<p>enumerable: false 不可枚举</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123;</span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: false</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2、或者通过原型对象绑定的可以枚举属性（这种枚举类型只有for…in方法可以访问到）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function Person () &#123;</span><br><span class="line">    this.name &#x3D; &#39;Lily&#39;</span><br><span class="line">    this.gender &#x3D; &#39;女&#39;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.age &#x3D; 24</span><br><span class="line">let people &#x3D; new Person()</span><br><span class="line">for (let key in people) &#123;</span><br><span class="line">    console.log(people[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; Lily</span><br><span class="line">&#x2F;&#x2F; 女</span><br><span class="line">&#x2F;&#x2F; 4</span><br><span class="line">console.log(Object.keys(o))             &#x2F;&#x2F; [&quot;Lily&quot;, &quot;女&quot;]</span><br><span class="line">console.log(JSON.stringify(people))     &#x2F;&#x2F; &#123;&quot;name&quot;:&quot;Lily&quot;,&quot;gender&quot;:&quot;女&quot;&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>-js篇</category>
-      </categories>
-      <tags>
-        <tag>-js枚举</tag>
       </tags>
   </entry>
 </search>
