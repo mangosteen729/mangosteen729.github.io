@@ -189,6 +189,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://img3.imgtn.bdimg.com/it/u=3325155820,1914915381&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="寒山">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山的博客吖">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/" class="post-title-link" itemprop="url">可枚举和不可枚举</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-19 11:34:03 / 修改时间：11:45:32" itemprop="dateCreated datePublished" datetime="2020-04-19T11:34:03+08:00">2020-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">-js篇</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/" class="post-meta-item leancloud_visitors" data-flag-title="可枚举和不可枚举" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/19/%E5%8F%AF%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%B8%8D%E5%8F%AF%E6%9E%9A%E4%B8%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <!-- mroe -->
+<p>枚举：是指对象中的属性可以遍历出来，再简单点就是属性可以列举出来。<br>可枚举性决定了这个属性能否被for…in查找遍历到。</p>
+<p>js中基本包装类型的原型属性是不可枚举的，如Object, Array, Number等，如果你写出这样的代码遍历其中的属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var num &#x3D; new Number();</span><br><span class="line">for(var pro in num) &#123;</span><br><span class="line">    console.log(&quot;num.&quot; + pro + &quot; &#x3D; &quot; + num[pro]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它的输出结果会是空。这是因为Number中内置的属性是不可枚举的，所以不能被for…in访问到。</p>
+<p>枚举性的作用：<br>1、for…in<br>2、Object.keys()<br>3、JSON.stringify()</p>
+<p>那么什么样的属性是可枚举属性呢？<br>1、通过Object.defineProperty()方法加的可枚举属性<br>enumerable: true 可枚举</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123; </span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: true</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line">&#x2F;&#x2F; 3</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>enumerable: false 不可枚举</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let o &#x3D; &#123;a: 1, b: 2&#125;</span><br><span class="line">Object.defineProperty(o, &#39;c&#39;, &#123;</span><br><span class="line">    value: 3,</span><br><span class="line">    enumerable: false</span><br><span class="line">&#125;)</span><br><span class="line">for (let key in o) &#123;</span><br><span class="line">    console.log(o[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; 2</span><br><span class="line"></span><br><span class="line">console.log(Object.keys(o))</span><br><span class="line">&#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;]</span><br><span class="line"></span><br><span class="line">console.log(JSON.stringify(o))</span><br><span class="line">&#x2F;&#x2F; &#123;&quot;a&quot;:1,&quot;b&quot;:2&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、或者通过原型对象绑定的可以枚举属性（这种枚举类型只有for…in方法可以访问到）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function Person () &#123;</span><br><span class="line">    this.name &#x3D; &#39;Lily&#39;</span><br><span class="line">    this.gender &#x3D; &#39;女&#39;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.age &#x3D; 24</span><br><span class="line">let people &#x3D; new Person()</span><br><span class="line">for (let key in people) &#123;</span><br><span class="line">    console.log(people[key])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;*输出*&#x2F;</span><br><span class="line">&#x2F;&#x2F; Lily</span><br><span class="line">&#x2F;&#x2F; 女</span><br><span class="line">&#x2F;&#x2F; 4</span><br><span class="line">console.log(Object.keys(o))             &#x2F;&#x2F; [&quot;Lily&quot;, &quot;女&quot;]</span><br><span class="line">console.log(JSON.stringify(people))     &#x2F;&#x2F; &#123;&quot;name&quot;:&quot;Lily&quot;,&quot;gender&quot;:&quot;女&quot;&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://img3.imgtn.bdimg.com/it/u=3325155820,1914915381&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="寒山">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山的博客吖">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/" class="post-title-link" itemprop="url">express如何调用外部api</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-17 20:08:59 / 修改时间：20:13:01" itemprop="dateCreated datePublished" datetime="2020-04-17T20:08:59+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">-js篇</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/" class="post-meta-item leancloud_visitors" data-flag-title="express如何调用外部api" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="再node中如何调用外部的api"><a href="#再node中如何调用外部的api" class="headerlink" title="再node中如何调用外部的api"></a>再node中如何调用外部的api</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/17/express%E5%A6%82%E4%BD%95%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8api/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/16/1%E4%B8%AA%E5%B0%8F%E6%97%B6%E5%AD%A6%E4%BC%9Aless/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -381,102 +579,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://img3.imgtn.bdimg.com/it/u=3325155820,1914915381&fm=26&gp=0.jpg">
-      <meta itemprop="name" content="寒山">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="寒山的博客吖">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" class="post-title-link" itemprop="url">css脚本化1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-04-16 11:51:20 / 修改时间：12:53:53" itemprop="dateCreated datePublished" datetime="2020-04-16T11:51:20+08:00">2020-04-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">-js篇</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" class="post-meta-item leancloud_visitors" data-flag-title="css脚本化1" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是css脚本化？"><a href="#什么是css脚本化？" class="headerlink" title="什么是css脚本化？"></a>什么是css脚本化？</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%962/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -550,6 +652,102 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%962/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://hanshan.com/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://img3.imgtn.bdimg.com/it/u=3325155820,1914915381&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="寒山">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山的博客吖">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" class="post-title-link" itemprop="url">css脚本化1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-16 11:51:20 / 修改时间：12:53:53" itemprop="dateCreated datePublished" datetime="2020-04-16T11:51:20+08:00">2020-04-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">-js篇</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" class="post-meta-item leancloud_visitors" data-flag-title="css脚本化1" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是css脚本化？"><a href="#什么是css脚本化？" class="headerlink" title="什么是css脚本化？"></a>什么是css脚本化？</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/16/css%E8%84%9A%E6%9C%AC%E5%8C%961/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -835,7 +1033,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -848,7 +1046,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
